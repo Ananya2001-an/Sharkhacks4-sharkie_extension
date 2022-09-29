@@ -2,7 +2,7 @@ export {}
 
 chrome.runtime.onInstalled.addListener(()=>{
     chrome.contextMenus.create({
-        title: 'Save this content with \'Sharkie\'',
+        title: 'Add selected text to Sharkie',
         contexts: ["selection"],
         id: "myId"
       })
