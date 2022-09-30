@@ -1,17 +1,34 @@
-export {}
+import tldr from 'wikipedia-tldr'
 
 chrome.runtime.onInstalled.addListener(()=>{
     chrome.contextMenus.create({
-        title: 'Add selected text to Sharkie',
+        title: 'Save selected text to Sharkie',
         contexts: ["selection"],
-        id: "myId"
+        id: "myDocId"
       })
+    chrome.contextMenus.create({
+      title: 'Search "%s" with Sharkie',
+      contexts: ["selection"],
+      id: "myWikiId"
+    })
 })
 
-chrome.contextMenus.onClicked.addListener(function (info, tab) {
+chrome.contextMenus.onClicked.addListener(async function (info, tab) {
     const selectedText = info.selectionText
-    chrome.tabs.sendMessage(tab.id, {
-      type: "toBeSaved",
-      text: selectedText
-    })
+
+    let id = info.menuItemId
+    if(id === 'myDocId')
+    {
+      chrome.tabs.sendMessage(tab.id, {
+        type: "toBeSaved",
+        text: selectedText
+      })
+    }
+    else if(id === 'myWikiId'){
+      let tldrText = await tldr(selectedText.split(' ')[0])
+      chrome.tabs.sendMessage(tab.id, {
+        type: "toBeSearched",
+        text: tldrText
+      })
+    }
 })
