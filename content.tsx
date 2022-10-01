@@ -4,7 +4,7 @@ import { Card, Nav, Tab, Button, InputGroup, Form, Alert} from "react-bootstrap"
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Document, Packer, Paragraph, TextRun} from 'docx';
 import { saveAs } from 'file-saver';
-import {FaArrowUp, FaArrowDown, FaTrash, FaSave, FaBrain,FaCamera,
+import {FaArrowUp, FaArrowDown, FaTrash, FaSave,
 FaRobot, FaSearch, FaFileWord, FaAd, FaSearchLocation, FaFish} from 'react-icons/fa'
 import cohere from 'cohere-ai'
 import axios from 'axios'
@@ -178,7 +178,7 @@ const PlasmoOverlay = () => {
     const option={
       number: e.target[0].value
     }
-    axios.post('https://sharkie-twilio-server.herokuapp.com/number', option)
+    axios.post('http://localhost:3000/number', option)
     .then(res=>{
       console.log(res.data)
     })
@@ -197,13 +197,13 @@ const PlasmoOverlay = () => {
       let lat =  position.coords.latitude 
       let long = position.coords.longitude
 
-      axios.post(`https://sharkie-twilio-server.herokuapp.com/receive/location`, {lat: lat, long: long})
+      axios.post(`http://localhost:3000/receive/location`, {lat: lat, long: long})
       .then(res=> console.log(res.data))
     }
   }
 
   function memeTrigger(){
-    axios.post('https://sharkie-twilio-server.herokuapp.com/receive/meme')
+    axios.post('http://localhost:3000/receive/meme')
     .then(res=>{
       console.log(res.data)
     })
