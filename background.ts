@@ -1,6 +1,7 @@
 import tldr from 'wikipedia-tldr'
 
 chrome.runtime.onInstalled.addListener(()=>{
+ 
     chrome.contextMenus.create({
         title: 'Save selected text to Sharkie',
         contexts: ["selection"],

@@ -13,6 +13,7 @@
     "@tailwindcss/typography": "0.5.7",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.1",
+    "brain.js": "2.0.0-beta.16",
     "cohere-ai": "^4.3.1",
     "docx": "^7.5.0",
     "file-saver": "^2.0.5",
@@ -43,7 +44,8 @@
       "https://*/*"
     ],
     "permissions": [
-      "contextMenus"
+      "contextMenus",
+      "tabs"
     ],
     "web_accessible_resources": [
       {
