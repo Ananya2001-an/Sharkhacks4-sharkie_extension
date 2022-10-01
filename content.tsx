@@ -178,7 +178,7 @@ const PlasmoOverlay = () => {
     const option={
       number: e.target[0].value
     }
-    axios.post('http://localhost:3000/number', option)
+    axios.post('https://sharkie-twilio-server.herokuapp.com/number', option)
     .then(res=>{
       console.log(res.data)
     })
@@ -197,7 +197,7 @@ const PlasmoOverlay = () => {
       let lat =  position.coords.latitude 
       let long = position.coords.longitude
 
-      axios.post(`http://localhost:3000/receive/location`, {lat: lat, long: long})
+      axios.post(`https://sharkie-twilio-server.herokuapp.com/receive/location`, {lat: lat, long: long})
       .then(res=> console.log(res.data))
     }
   }
