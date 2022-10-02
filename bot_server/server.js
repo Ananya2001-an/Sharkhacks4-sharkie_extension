@@ -3,19 +3,20 @@ dotenv.config()
 import express from "express"
 import cors from "cors"
 import fetch from "node-fetch"
+import twilio from "twilio"
+
 const app = express()
 app.use(cors())
-let mobileNumber 
-const accountSid = process.env.TWILIO_ACCOUNT_SID
-const authToken = process.env.TWILIO_AUTH_TOKEN
-import twilio from "twilio"
-const client = twilio(accountSid, authToken);
-
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
+let mobileNumber 
+const accountSid = process.env.TWILIO_ACCOUNT_SID
+const authToken = process.env.TWILIO_AUTH_TOKEN
+const client = twilio(accountSid, authToken);
+
 app.get('/', (req, res)=>{
-    res.send("Twilio server up and running")
+    res.send("Twilio server up and running!")
 })
 
 app.post('/number', (req,res)=>{
@@ -35,22 +36,22 @@ app.post('/receive/:id',async(req, res)=>{
         await fetch(`https://api.geoapify.com/v2/places?categories=commercial.books&lat=${lat}&lon=${long}&lang=en&limit=3&apiKey=${process.env.GEOAPIFY_API_KEY}`)
         .then(response=>response.json())
         .then(data =>{
-           if(data.features[0] != undefined)
-           {
-                bookstoreLat = data.features[0].properties.lat
-                bookstoreLong = data.features[0].properties.lon
-                bookstoreName = data.features[0].properties.name
-
-                client.messages
-                .create({
-                from: 'whatsapp:+14155238886',
-                body: 'Sharkie found this bookstore near you!',
-                persistentAction: [`geo:${bookstoreLat},${bookstoreLong}|${bookstoreName}`],
-                to: `whatsapp:+91${mobileNumber}`
-                })
-                .then(message => res.json(message.sid))
-                .catch(err => res.json(err));
-           }
+        for(let i=0;i<3;i++){
+            if(data.features[i] != undefined)
+            {
+                 bookstoreLat = data.features[i].properties.lat
+                 bookstoreLong = data.features[i].properties.lon
+                 bookstoreName = data.features[i].properties.name
+ 
+                 client.messages
+                 .create({
+                 from: 'whatsapp:+14155238886',
+                 body: `${i+1}. Sharkie found this bookstore near you!`,
+                 persistentAction: [`geo:${bookstoreLat},${bookstoreLong}|${bookstoreName}`],
+                 to: `whatsapp:+91${mobileNumber}`
+                 })
+            }
+        }
         })
     }
 
